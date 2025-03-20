@@ -16,6 +16,7 @@ from app.routers.fetch_users import router as fetch_users_router
 from app.routers.fetch_services import router as fetch_services_router
 from app.routers.roles import router as roles_router
 from app.routers.fetch_roles import router as fetch_roles_router
+from app.routers.fetch_billing import router as fetch_billing_router
 
 
 app = FastAPI()
@@ -50,6 +51,7 @@ app.include_router(roles_router)
 app.include_router(fetch_users_router)
 app.include_router(fetch_services_router)
 app.include_router(fetch_roles_router)
+app.include_router(fetch_billing_router)
 
 
 @app.post("/users/register")
