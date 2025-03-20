@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 import psycopg2
 
-# Database connection
+
 conn = psycopg2.connect(
     dbname="local",
     user="postgres",
@@ -11,10 +11,9 @@ conn = psycopg2.connect(
 )
 cursor = conn.cursor()
 
-# Define API Router
+
 router = APIRouter()
 
-# Fetch staff details
 @router.get("/staffs/get")
 def get_staffs():
     try:
