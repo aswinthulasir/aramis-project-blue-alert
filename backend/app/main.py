@@ -7,6 +7,7 @@ import jwt
 import os
 import random
 import string
+from typing import Optional
 
 app = FastAPI()
 
@@ -22,13 +23,17 @@ conn = psycopg2.connect(
 cursor = conn.cursor()
 
 # JWT Secret Key
-SECRET_KEY = "your_secret_key"
+# SECRET_KEY = "your_secret_key"
 
 class RegisterRequest(BaseModel):
     email: str
     password: str
-    username: str
+    username: Optional[str] = None 
     role_id: int
+    s_name: str
+    
+
+
 
 @app.post("/users/register")
 def register_user(user: RegisterRequest):
@@ -56,8 +61,8 @@ def register_user(user: RegisterRequest):
         
         # Step 3: Insert into staffs table
         cursor.execute(
-            "INSERT INTO staffs (staff_id, u_id, role_id, activity) VALUES (%s, %s, %s, %s)",
-            (staff_id, u_id, user.role_id, True)
+            "INSERT INTO staffs (staff_id, u_id, s_name , role_id, activity) VALUES (%s,%s, %s, %s, %s)",
+            (staff_id, u_id, user.s_name, user.role_id, True)  
         )
 
         # Step 4: Generate JWT Token and store it in auth table
