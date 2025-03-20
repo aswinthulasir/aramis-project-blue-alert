@@ -14,6 +14,7 @@ from app.routers.bills import router as bills_router
 from app.routers.auth import router as auth_router
 from app.routers.fetch_users import router as fetch_users_router
 from app.routers.fetch_services import router as services_router
+from app.routers.roles import router as roles_router
 
 
 app = FastAPI()
@@ -43,6 +44,7 @@ app.include_router(services_router)
 app.include_router(patients_router)
 app.include_router(bills_router)
 app.include_router(auth_router)
+app.include_router(roles_router)
 
 app.include_router(fetch_users_router)
 app.include_router(services_router)
