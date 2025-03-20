@@ -11,6 +11,7 @@ from typing import Optional
 from app.routers.services import router as services_router
 from app.routers.patients import router as patients_router
 from app.routers.bills import router as bills_router
+from app.routers.auth import router as auth_router
 
 app = FastAPI()
 
@@ -26,7 +27,7 @@ conn = psycopg2.connect(
 cursor = conn.cursor()
 
 # JWT Secret Key
-# SECRET_KEY = "your_secret_key"
+SECRET_KEY = "your_secret_key"
 
 class RegisterRequest(BaseModel):
     email: str
@@ -38,6 +39,7 @@ class RegisterRequest(BaseModel):
 app.include_router(services_router)
 app.include_router(patients_router)
 app.include_router(bills_router)
+app.include_router(auth_router)
 
 
 @app.post("/users/register")
