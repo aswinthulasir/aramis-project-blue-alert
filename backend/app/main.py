@@ -9,6 +9,7 @@ import random
 import string
 from typing import Optional
 from app.routers.services import router as services_router
+from app.routers.patients import router as patients_router
 
 app = FastAPI()
 
@@ -34,6 +35,7 @@ class RegisterRequest(BaseModel):
     s_name: str
     
 app.include_router(services_router)
+app.include_router(patients_router)
 
 
 @app.post("/users/register")
