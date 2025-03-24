@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Patient | Medibills</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="container mt-5">
+
+    <h3 class="text-center mb-4">Add New Patient</h3>
+    
+    <form id="patientForm">
+        <div class="mb-3">
+            <label for="p_name" class="form-label">Patient Name</label>
+            <input type="text" class="form-control" id="p_name" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="p_dept" class="form-label">Department</label>
+            <select class="form-control" id="p_dept" required>
+                <option value="General Medicine">General Medicine</option>
+                <option value="Cardiology">Cardiology</option>
+                <option value="Neurology">Neurology</option>
+                <option value="Orthopedics">Orthopedics</option>
+                <option value="Pediatrics">Pediatrics</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="p_desc" class="form-label">Problem Description</label>
+            <textarea class="form-control" id="p_desc" rows="3" required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="p_age" class="form-label">Age</label>
+            <input type="number" class="form-control" id="p_age" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="p_doc" class="form-label">Doctor Assigned</label>
+            <input type="text" class="form-control" id="p_doc" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="p_number" class="form-label">Contact Number</label>
+            <input type="text" class="form-control" id="p_number" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Submit Patient</button>
+    </form>
+
+    <div id="message" class="mt-3"></div>
+
+    <script>
+        document.getElementById("patientForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const patientData = {
+                p_name: document.getElementById("p_name").value,
+                p_dept: document.getElementById("p_dept").value,
+                p_desc: document.getElementById("p_desc").value,
+                p_age: parseInt(document.getElementById("p_age").value),
+                p_doc: document.getElementById("p_doc").value,
+                p_number: document.getElementById("p_number").value
+            };
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/patients/post", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(patientData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    document.getElementById("message").innerHTML = 
+                        `<div class="alert alert-success">Patient added successfully!</div>`;
+                    document.getElementById("patientForm").reset();
+                } else {
+                    document.getElementById("message").innerHTML = 
+                        `<div class="alert alert-danger">Error: ${result.detail}</div>`;
+                }
+            } catch (error) {
+                document.getElementById("message").innerHTML = 
+                    `<div class="alert alert-danger">Failed to add patient. Try again.</div>`;
+            }
+        });
+    </script>
+
+</body>
+</html>
