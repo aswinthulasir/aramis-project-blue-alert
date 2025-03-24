@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MEDICAL BILLING SYSTEM</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles/home.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-mrcW6ZMFYJhce48SMP6pHjQWlHCEb2MkskOePFn/CAxH/0W5Kk/1V9IdaNn6gQFz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -14,17 +18,57 @@
           <a class="navbar-brand" href="#">
             <img class="logo" src="./assets/MEDI bills.png" alt="MEDI BILLS LOGO">
           </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+          <ul>
+            <li>Nearest<span>Lab</span></li>
+            <li>Request<span>Call</span></li>
+            <li>Book a<span>Test</span></li>
+          </ul>
+          <button class="login-btn">Login</button>
           
           </div>
       </nav>
-    
 
-   
+      <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="1000">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="./assets/Rectangle 3 (2).png" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="./assets/Rectangle4.png" class="d-block w-100" alt="...">
+            </div>
+            
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    
+    <div class="header"><h3>Our<span> services</span></h3></div>
+
+    <div class="card-container">
+    
+    <div class="card" style="width: 18rem;">
+        <img src="https://img.freepik.com/premium-photo/doctor-examining-female-patient_107420-67735.jpg?semt=ais_hybrid" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">Heading</h5>
+            <h4 class="card-amt">Rs.500/-</h4>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <div class="btn-container">
+          <button class="card-btn-1">Know More</button>
+          <button class="card-btn-2">Book Now</button>
+
+        </div>
+        </div>
+      </div>
+
+    </div>
     <!-- Footer -->
-    <footer class="bg-primary text-white text-center py-3 mt-5">
+    <footer class="bg-primary text-center text-white mt-5 py-3">
         <p class="mb-0">&copy; 2025 Medical Billing System. All Rights Reserved.</p>
     </footer>
 </body>
