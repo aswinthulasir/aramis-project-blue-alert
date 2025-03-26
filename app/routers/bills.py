@@ -5,7 +5,7 @@ from psycopg2.extras import RealDictCursor
 
 router = APIRouter()
 
-# Database connection
+# Database Connection
 conn = psycopg2.connect(
     dbname="local",
     user="postgres",
@@ -16,31 +16,41 @@ conn = psycopg2.connect(
 )
 cursor = conn.cursor()
 
-# Pydantic Model
+# Pydantic Model for Bill Request
 class BillRequest(BaseModel):
     ser_id: int
-    u_id: str
+    staff_id: int
     p_id: int
-    ser_rate: float
     payment_sts: bool
+    bill_cfm: bool
 
-# POST route to add a bill
+# POST Route to Add a Bill
 @router.post("/bills/post")
 def add_bill(bill: BillRequest):
     try:
+        # Fetch service rate from rates table
+        cursor.execute("SELECT ser_rate FROM rates WHERE ser_id = %s", (bill.ser_id,))
+        service_data = cursor.fetchone()
+
+        # Debugging: Print fetched service rate
+        print("Fetched service rate:", service_data)  # This will help debug the issue
+
+        if not service_data:
+            raise HTTPException(status_code=400, detail="Invalid service ID or rate not found.")
+
+        ser_rate = float(service_data["ser_rate"])  # Explicitly convert to float
+
         # Insert into billing table
         cursor.execute(
-            "INSERT INTO billing (ser_id, u_id, p_id, ser_rate, payment_sts) VALUES (%s, %s, %s, %s, %s) RETURNING bill_id",
-            (bill.ser_id, bill.u_id, bill.p_id, bill.ser_rate, bill.payment_sts)
+            "INSERT INTO billing (ser_id, staff_id, p_id, ser_rate, payment_sts, bill_cfm) VALUES (%s, %s, %s, %s, %s, %s) RETURNING bill_id",
+            (bill.ser_id, bill.staff_id, bill.p_id, ser_rate, bill.payment_sts, bill.bill_cfm)
         )
         bill_data = cursor.fetchone()
         conn.commit()
-
-        if not bill_data:
-            raise HTTPException(status_code=500, detail="Failed to add bill")
 
         return {"message": "Bill added successfully", "bill_id": bill_data["bill_id"]}
 
     except Exception as e:
         conn.rollback()
         raise HTTPException(status_code=500, detail=str(e))
+
