@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Bill | MediCare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="container mt-5">
+
+    <h3 class="text-center mb-4">Add New Bill</h3>
+    
+    <form id="billForm">
+        <div class="mb-3">
+            <label for="service" class="form-label">Service</label>
+            <select class="form-control" id="service" required>
+                <option value="">Select a Service</option>
+            </select>
+        </div>
+
+        <div class="mb-3 d-none">
+            <label for="ser_rate" class="form-label">Service Rate</label>
+            <input type="hidden" id="ser_rate">
+        </div>
+
+        <div class="mb-3">
+            <label for="patient" class="form-label">Patient</label>
+            <select class="form-control" id="patient" required>
+                <option value="">Select a Patient</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Payment Status</label>
+            <div>
+                <button type="button" class="btn btn-outline-success" id="payment_true">Paid</button>
+                <button type="button" class="btn btn-outline-danger" id="payment_false">Not Paid</button>
+                <input type="hidden" id="payment_sts" value="false">
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Bill Confirmation</label>
+            <div>
+                <button type="button" class="btn btn-outline-success" id="bill_true">Confirmed</button>
+                <button type="button" class="btn btn-outline-danger" id="bill_false">Not Confirmed</button>
+                <input type="hidden" id="bill_cfm" value="false">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Submit Bill</button>
+    </form>
+
+    <div id="message" class="mt-3"></div>
+
+   <script>
+    const loggedInStaffId = 101; // Set dynamically based on the logged-in user
+
+    async function fetchServices() {
+    try {
+        const response = await fetch("http://127.0.0.1:8000/services/get");
+        const data = await response.json();
+        const serviceDropdown = document.getElementById("service");
+
+        serviceDropdown.innerHTML = `<option value="">Select a service</option>`; // Default option
+
+        data.services.forEach(service => {
+            let option = document.createElement("option");
+            option.value = service.ser_id;
+            option.textContent = service.ser_name;
+            serviceDropdown.appendChild(option);
+        });
+
+        // Fetch service rate when a service is selected
+        serviceDropdown.addEventListener("change", async function () {
+            let selectedServiceId = serviceDropdown.value;
+            if (!selectedServiceId) return;
+
+            try {
+                // Fetch the service rate dynamically
+                const rateResponse = await fetch(`http://127.0.0.1:8000/rates/get/${selectedServiceId}`);
+                const rateData = await rateResponse.json();
+                
+                let rate = rateData.ser_rate || "0"; // Default rate if not found
+                document.getElementById("ser_rate").value = parseFloat(rate).toFixed(2);
+                
+                console.log("Selected Service ID:", selectedServiceId);
+                console.log("Fetched Service Rate:", rate);
+
+            } catch (error) {
+                console.error("Error fetching service rate:", error);
+                document.getElementById("ser_rate").value = "0.00"; // Default fallback
+            }
+        });
+
+    } catch (error) {
+        console.error("Error fetching services:", error);
+    }
+}
+
+
+
+function fetchServiceRate(serviceId) {
+        fetch(`http://127.0.0.1:8000/rates/get/${serviceId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to fetch service rate");
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Fetched Service Rate:", data.ser_rate); // Debugging log
+                document.getElementById("serviceRate").innerText = `Service Rate: ₹${data.ser_rate}`;
+            })
+            .catch(error => {
+                console.error("Error fetching service rate:", error);
+            });
+    }
+
+    // Ensure the DOM is loaded before accessing elements
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("service").addEventListener("change", function () {
+            let selectedServiceId = this.value;
+            console.log("Selected Service ID:", selectedServiceId); // Debugging log
+            if (selectedServiceId) {
+                fetchServiceRate(selectedServiceId);
+            }
+        });
+    });
+
+
+
+async function fetchPatients() {
+    try {
+        const response = await fetch("http://127.0.0.1:8000/patients/get");
+        const data = await response.json();
+        const patientDropdown = document.getElementById("patient");
+
+        patientDropdown.innerHTML = `<option value="">Select a patient</option>`; // Default option
+
+        data.patients.forEach(patient => {
+            let option = document.createElement("option");
+            option.value = patient.p_id;
+            option.textContent = patient.p_name;
+            patientDropdown.appendChild(option);
+        });
+
+    } catch (error) {
+        console.error("Error fetching patients:", error);
+    }
+}
+
+function toggleButton(selectedId, unselectedId, hiddenInputId, value) {
+    document.getElementById(hiddenInputId).value = value;
+    document.getElementById(selectedId).classList.add(value === "true" ? "btn-success" : "btn-danger");
+    document.getElementById(selectedId).classList.remove("btn-outline-success", "btn-outline-danger");
+    document.getElementById(unselectedId).classList.add(value === "true" ? "btn-outline-danger" : "btn-outline-success");
+    document.getElementById(unselectedId).classList.remove("btn-success", "btn-danger");
+}
+
+document.getElementById("payment_true").addEventListener("click", function() {
+    toggleButton("payment_true", "payment_false", "payment_sts", "true");
+});
+
+document.getElementById("payment_false").addEventListener("click", function() {
+    toggleButton("payment_false", "payment_true", "payment_sts", "false");
+});
+
+document.getElementById("bill_true").addEventListener("click", function() {
+    toggleButton("bill_true", "bill_false", "bill_cfm", "true");
+});
+
+document.getElementById("bill_false").addEventListener("click", function() {
+    toggleButton("bill_false", "bill_true", "bill_cfm", "false");
+});
+
+document.getElementById("billForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const serviceDropdown = document.getElementById("service");
+    const selectedService = serviceDropdown.value;
+    let serRate = document.getElementById("ser_rate").value.trim();
+
+    // Validation: Ensure a service is selected
+    if (!selectedService || selectedService === "") {
+        document.getElementById("message").innerHTML = `<div class="alert alert-danger">Please select a service.</div>`;
+        return;
+    }
+
+    // Validation: Ensure service rate is valid
+    if (!serRate || isNaN(parseFloat(serRate)) || parseFloat(serRate) <= 0) {
+        document.getElementById("message").innerHTML = `<div class="alert alert-danger">Invalid service rate. Please select a valid service.</div>`;
+        return;
+    }
+
+    const billData = {
+        ser_id: parseInt(selectedService),
+        staff_id: loggedInStaffId,
+        p_id: parseInt(document.getElementById("patient").value),
+        ser_rate: parseFloat(serRate),
+        payment_sts: document.getElementById("payment_sts").value === "true",
+        bill_cfm: document.getElementById("bill_cfm").value === "true"
+    };
+
+    console.log("Submitting Data:", billData); // Debugging log
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/bills/post", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(billData)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            document.getElementById("message").innerHTML = `<div class="alert alert-success">Bill added successfully!</div>`;
+            document.getElementById("billForm").reset();
+        } else {
+            document.getElementById("message").innerHTML = `<div class="alert alert-danger">Error: ${result.detail}</div>`;
+        }
+    } catch (error) {
+        document.getElementById("message").innerHTML = `<div class="alert alert-danger">Failed to add bill. Try again.</div>`;
+    }
+});
+
+window.onload = function() {
+    fetchServices();
+    fetchPatients();
+};
+
+</script>
+
+
+</body>
+</html>

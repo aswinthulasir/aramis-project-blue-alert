@@ -1,5 +1,5 @@
 function loginButton() {
-    window.location.href = "login.html";
+  window.location.href = "login.html";
 }
 
 // document.addEventListener("DOMContentLoaded", fetchServices);
@@ -10,7 +10,7 @@ function loginButton() {
 //         if (!response.ok) {
 //             throw new Error(`HTTP error! Status: ${response.status}`);
 //         }
-        
+      
 //         const data = await response.json();
 //         const services = data.services; // Access the array inside "services"
 //         const cardContainer = document.getElementById("cardContainer");
@@ -46,24 +46,23 @@ function loginButton() {
 
 
 fetch("http://127.0.0.1:8000/services/get")
-  .then(response => response.json())
-  .then(data => {
-    const servicesContainer = document.getElementById("services-container");
-    servicesContainer.innerHTML = "";
+.then(response => response.json())
+.then(data => {
+  const servicesContainer = document.getElementById("services-container");
+  servicesContainer.innerHTML = "";
 
-    data.services.forEach(service => {
-      const card = document.createElement("div");
-      card.classList.add("card");
+  data.services.forEach(service => {
+    const card = document.createElement("div");
+    card.classList.add("card");
 
-      card.innerHTML = `
-        <img src="${service.ser_image}" alt="${service.ser_name}" class="card-img">
-        <h3>${service.ser_name}</h3>
-        <p>${service.ser_desc}</p>
-        <p><strong>Available:</strong> ${service.ser_avl ? "Yes" : "No"}</p>
-      `;
+    card.innerHTML = `
+      <img src="${service.ser_image}" alt="${service.ser_name}" class="card-img">
+      <h3>${service.ser_name}</h3>
+      <p>${service.ser_desc}</p>
+      <p><strong>Available:</strong> ${service.ser_avl ? "Yes" : "No"}</p>
+    `;
 
-      servicesContainer.appendChild(card);
-    });
-  })
-  .catch(error => console.error("Error:", error));
-
+    servicesContainer.appendChild(card);
+  });
+})
+.catch(error => console.error("Error:", error));
