@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Bills</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .table {
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Patient Bill Details</h2>
+        <table class="table table-bordered mt-4">
+            <thead class="table-dark">
+                <tr>
+                    <th>Bill ID</th>
+                    <th>Service ID</th>
+                    <th>Staff ID</th>
+                    <th>Patient ID</th>
+                    <th>Service Rate</th>
+                    <th>Payment Status</th>
+                    <th>Bill Confirmed</th>
+                    <th>Bill Date</th>
+                </tr>
+            </thead>
+            <tbody id="billTableBody">
+                <!-- Data will be inserted here dynamically -->
+            </tbody>
+        </table>
+        <div class="text-center mt-3">
+            <a href="show_patients.html" class="btn btn-secondary">Back to Patients</a>
+        </div>
+    </div>
+
+    <script>
+        // Get p_id from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const p_id = urlParams.get("id");
+
+        if (p_id) {
+            fetch(`http://127.0.0.1:8000/api/bills/${p_id}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Fetched Bills Data:", data);
+                    displayBills(data);
+                })
+                .catch(error => console.error("Error fetching bill data:", error));
+        } else {
+            console.error("No patient ID found in URL");
+        }
+
+        function displayBills(bills) {
+            let billTableBody = document.getElementById("billTableBody");
+            billTableBody.innerHTML = ""; // Clear previous data
+
+            if (bills.length === 0) {
+                billTableBody.innerHTML = "<tr><td colspan='8' class='text-center'>No bills found</td></tr>";
+                return;
+            }
+
+            bills.forEach(bill => {
+                let row = `
+                    <tr>
+                        <td>${bill.bill_id}</td>
+                        <td>${bill.ser_id}</td>
+                        <td>${bill.staff_id}</td>
+                        <td>${bill.p_id}</td>
+                        <td>${bill.ser_rate}</td>
+                        <td>${bill.payment_sts ? "Paid" : "Pending"}</td>
+                        <td>${bill.bill_cfm ? "Yes" : "No"}</td>
+                        <td>${bill.bill_date}</td>
+                    </tr>
+                `;
+                billTableBody.innerHTML += row;
+            });
+        }
+    </script>
+</body>
+</html>
