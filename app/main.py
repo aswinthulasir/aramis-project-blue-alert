@@ -26,6 +26,7 @@ from app.routers.fetch_patients import router as fetch_patients_router
 from app.routers.update_staffs import router as update_staffs_router
 from app.routers.update_services import router as update_services_router
 from app.routers import bills_today
+from app.routers.indi_bills import router as indi_bills_router
 
 app = FastAPI()
 
@@ -83,6 +84,7 @@ app.include_router(fetch_patients_router)
 app.include_router(update_staffs_router)
 app.include_router(update_services_router)
 app.include_router(bills_today.router)
+app.include_router(indi_bills_router, prefix="/api", tags=["Billing"])
 
 # User Registration Route
 @app.post("/users/register")
