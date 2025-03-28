@@ -9,3 +9,28 @@
    border-radius: 10px;
 }
 
+
+::-webkit-scrollbar {
+    width: 2px; 
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #007bff; 
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0056b3; 
+}
+
+
+html {
+    scrollbar-color: #007bff #f1f1f1;
+    scrollbar-width: thin;
+}
+
