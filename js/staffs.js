@@ -1,21 +1,21 @@
 async function fetchStaffsAndRoles() {
     try {
-        // Fetch staff details
+        // fetch staff
         const staffResponse = await fetch("http://127.0.0.1:8000/staffs/get");
         const staffData = await staffResponse.json();
 
-        console.log("Staff Data:", staffData); // Debugging line
+        console.log("Staff Data:", staffData); 
 
-        // Ensure staffData is an array
+       
         const staffs = Array.isArray(staffData) ? staffData : staffData.staffs || [];
 
-        // Fetch role details
+        // fetch role 
         const roleResponse = await fetch("http://127.0.0.1:8000/roles/get");
         const rolesData = await roleResponse.json();
 
-        console.log("Roles Data:", rolesData); // Debugging line
+        console.log("Roles Data:", rolesData); 
 
-        // Convert role array into a map { role_id: role_name }
+        // convert role array into a map { role_id: role_name }
         const rolesMap = {};
         if (Array.isArray(rolesData.roles)) {
             rolesData.roles.forEach(role => {
@@ -31,7 +31,7 @@ async function fetchStaffsAndRoles() {
 
 function populateStaffTable(staffs, rolesMap) {
     const tableBody = document.getElementById("staffTableBody");
-    tableBody.innerHTML = ""; // Clear table before adding rows
+    tableBody.innerHTML = ""; 
 
     staffs.forEach(staff => {
         const row = document.createElement("tr");
@@ -60,11 +60,11 @@ async function toggleActivity(staffId, currentStatus) {
         const response = await fetch(`http://127.0.0.1:8000/staffs/update-activity/${staffId}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ activity: !currentStatus }) // Toggle the value
+            body: JSON.stringify({ activity: !currentStatus })
         });
 
         if (response.ok) {
-            await fetchStaffsAndRoles(); // Refresh table after update
+            await fetchStaffsAndRoles(); 
         } else {
             alert("Failed to update activity.");
         }
@@ -73,5 +73,5 @@ async function toggleActivity(staffId, currentStatus) {
     }
 }
 
-// Load data when page loads
+
 document.addEventListener("DOMContentLoaded", fetchStaffsAndRoles);

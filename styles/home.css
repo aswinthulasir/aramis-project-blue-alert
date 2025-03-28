@@ -2,7 +2,7 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* Navbar Styles */
+/* Navbar*/
 
 .logo{
     padding-left: 20px;
@@ -32,7 +32,6 @@
 
 ul {
     display: flex;
-    /* padding: 15px 0; */
     border-radius: 10px;
     list-style: none;
     margin: 20px auto;
@@ -91,8 +90,8 @@ ul li:hover {
 .card-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* Center the cards */
-    gap: 20px; /* Spacing between cards */
+    justify-content: center; 
+    gap: 20px; 
     padding: 20px;
 }
 
@@ -155,7 +154,7 @@ ul li:hover {
 
 
 .login-container {
-    width: 400px; /* Adjust width as needed */
+    width: 400px;
     padding: 20px;
     border: 2px solid black;
     border-radius: 10px;

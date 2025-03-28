@@ -2,11 +2,11 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelector("form").addEventListener("submit", async function (event) {
         event.preventDefault(); // Prevent default form submission
 
-        loginStaff(); // Call login function
+        loginStaff(); 
     });
 });
 
-// **Function to Handle Login**
+//Handle login
 async function loginStaff() {
     const email = document.getElementById("exampleInputEmail1").value;
     const password = document.getElementById("exampleInputPassword1").value;
@@ -34,9 +34,9 @@ async function loginStaff() {
 
             // Store JWT token in localStorage
             localStorage.setItem("jwt_token", result.jwt_token);
-            localStorage.setItem("user_id", result.u_id); // Storing user ID for reference
+            localStorage.setItem("user_id", result.u_id); 
 
-            // Redirect to dashboard or home page
+            // Redirect to dashboard
             window.location.href = "dashboard.html"; 
         } else {
             alert("Error: " + result.detail);

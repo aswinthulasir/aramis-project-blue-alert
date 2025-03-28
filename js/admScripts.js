@@ -1,20 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
-    fetchRoles(); // Fetch roles when page loads
+    fetchRoles(); // Fetch roles automatically when the page is loaded
 
     document.getElementById("staffForm").addEventListener("submit", async function(event) {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault(); // Prevent default form submission / submit only if the button is pressed and values are inserted
         registerStaff();
     });
 });
 
-// **Function to Fetch Roles & Populate Dropdown**
+
 async function fetchRoles() {
     try {
         const response = await fetch("http://127.0.0.1:8000/roles/get");
         const data = await response.json();
 
         const roleDropdown = document.getElementById("roleDropdown");
-        roleDropdown.innerHTML = ""; // Clear existing options
+        roleDropdown.innerHTML = ""; // clear existing options
 
         data.roles.forEach(role => {
             const option = document.createElement("option");
@@ -28,7 +28,7 @@ async function fetchRoles() {
     }
 }
 
-// **Function to Register Staff**
+// Register Staff
 async function registerStaff() {
     const staffName = document.getElementById("staffName").value;
     const staffEmail = document.getElementById("staffEmail").value;
@@ -38,8 +38,8 @@ async function registerStaff() {
     const payload = {
         email: staffEmail,
         password: staffPassword,
-        username: null, // Optional
-        role_id: parseInt(roleId), // Ensure integer
+        username: null, 
+        role_id: parseInt(roleId), 
         s_name: staffName
     };
 
