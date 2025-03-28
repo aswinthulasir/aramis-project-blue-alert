@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 import psycopg2
 
-# Database Connection
+
 conn = psycopg2.connect(
     dbname="local",
     user="postgres",
@@ -14,7 +14,7 @@ cursor = conn.cursor()
 
 router = APIRouter()
 
-# Request Body Model
+
 class StaffNameUpdate(BaseModel):
     s_name: str
 
@@ -34,7 +34,7 @@ def update_staff_name(staff_id: int, request: StaffNameUpdate):
 
 
 class StaffActivityUpdate(BaseModel):
-    activity: bool  # Boolean field for activity status (True/False)
+    activity: bool  # Boolean field for activity status (True/False) no deleting required//adding just a flag for activity status
 
 # Update Staff Activity
 @router.put("/staffs/update-activity/{staff_id}")
@@ -51,7 +51,7 @@ def update_staff_activity(staff_id: int, request: StaffActivityUpdate):
 
 
 class StaffRoleUpdate(BaseModel):
-    role_id: int  # Role ID should be an integer
+    role_id: int  
 
 # Update Staff Role
 @router.put("/staffs/update-role/{staff_id}")

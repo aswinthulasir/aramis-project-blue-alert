@@ -5,7 +5,7 @@ from psycopg2.extras import RealDictCursor
 
 router = APIRouter()
 
-# Database connection
+
 conn = psycopg2.connect(
     dbname="local",
     user="postgres",
@@ -16,17 +16,17 @@ conn = psycopg2.connect(
 )
 cursor = conn.cursor()
 
-# Pydantic model for service creation
+
 class ServiceRequest(BaseModel):
     ser_name: str
     ser_desc: str
-    ser_image: str  # Image URL
-    ser_rate: float  # Service rate
+    ser_image: str  # image URL
+    ser_rate: float  
 
 @router.post("/services/post")
 def create_service(service: ServiceRequest):
     try:
-        # Insert into services table
+       
         cursor.execute(
             "INSERT INTO services (ser_name, ser_desc, ser_image, ser_avl) VALUES (%s, %s, %s, %s) RETURNING ser_id",
             (service.ser_name, service.ser_desc, service.ser_image, True)  # Default availability is True
@@ -39,7 +39,7 @@ def create_service(service: ServiceRequest):
 
         ser_id = service_data["ser_id"]
 
-        # Insert into rates table
+        # insert into rates table
         cursor.execute(
             "INSERT INTO rates (ser_id, ser_rate) VALUES (%s, %s)",
             (ser_id, service.ser_rate)

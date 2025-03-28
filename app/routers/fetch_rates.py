@@ -4,7 +4,7 @@ from psycopg2.extras import RealDictCursor
 
 router = APIRouter()
 
-# Database connection
+
 conn = psycopg2.connect(
     dbname="local",
     user="postgres",

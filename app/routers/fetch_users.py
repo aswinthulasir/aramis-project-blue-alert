@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 import psycopg2
 
-# Database connection
+
 conn = psycopg2.connect(
     dbname="local",
     user="postgres",

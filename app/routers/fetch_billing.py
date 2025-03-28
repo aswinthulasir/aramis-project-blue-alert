@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 import psycopg2
 
-# Database connection
+
 conn = psycopg2.connect(
     dbname="local",
     user="postgres",
@@ -11,7 +11,7 @@ conn = psycopg2.connect(
 )
 cursor = conn.cursor()
 
-# Define API Router
+
 router = APIRouter()
 
 @router.get("/billing/get")
@@ -30,8 +30,8 @@ def get_billing():
                 "ser_id": billing[1],
                 "u_id": billing[2],
                 "p_id": billing[3],
-                "ser_rate": float(billing[4]),  # Ensure float format for currency
-                "payment_sts": billing[5]  # True/False status
+                "ser_rate": float(billing[4]), 
+                "payment_sts": billing[5]  
             })
 
         return {"billing": billing_list}

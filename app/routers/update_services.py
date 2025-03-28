@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 import psycopg2
 
-# Database Connection
+
 conn = psycopg2.connect(
     dbname="local",
     user="postgres",

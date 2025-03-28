@@ -20,7 +20,7 @@ SECRET_KEY = "your_secret_key"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_HOURS = 2  # Token valid for 2 hours
 
-# Define API Router
+
 router = APIRouter()
 
 # Request model
@@ -28,7 +28,7 @@ class AuthRequest(BaseModel):
     email: str
     password: str
 
-# Function to generate JWT token
+# generate JWT token
 def create_jwt_token(user_id: str):
     expiration = datetime.utcnow() + timedelta(hours=ACCESS_TOKEN_EXPIRE_HOURS)
     payload = {
@@ -39,47 +39,47 @@ def create_jwt_token(user_id: str):
     token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
     return token
 
-# Authentication route
+
 @router.post("/auth/login")
 def authenticate_user(request: AuthRequest):
     try:
-        # Fetch user details from the database
+        
         cursor.execute("SELECT u_id, email FROM users WHERE email = %s", (request.email,))
         user = cursor.fetchone()
         
         if not user:
             raise HTTPException(status_code=401, detail="Invalid email or password")
         
-        u_id = user[0]  # Extract user ID
+        u_id = user[0]  
 
-        # Fetch hashed password from passwords table
+        
         cursor.execute("SELECT password FROM passwords WHERE u_id = %s", (u_id,))
         stored_password = cursor.fetchone()
 
         if not stored_password:
             raise HTTPException(status_code=401, detail="Invalid email or password")
 
-        # Verify password
+        
         if not bcrypt.checkpw(request.password.encode('utf-8'), stored_password[0].encode('utf-8')):
             raise HTTPException(status_code=401, detail="Invalid email or password")
 
-        # Generate new JWT token
+        
         access_token = create_jwt_token(u_id)
 
-        # Store JWT token in the database
+       
         cursor.execute("SELECT token FROM jwt_token WHERE user_id = %s", (u_id,))
         existing_token = cursor.fetchone()
 
         if existing_token:
-            # Update existing token
+            
             cursor.execute("UPDATE jwt_token SET token = %s WHERE user_id = %s", (access_token, u_id))
         else:
-            # Insert new token
+           
             cursor.execute("INSERT INTO jwt_token (user_id, token) VALUES (%s, %s)", (u_id, access_token))
 
         conn.commit()
 
-        # Return the token and user ID for dashboard navigation
+        
         return {
             "message": "Login successful",
             "user_id": u_id,

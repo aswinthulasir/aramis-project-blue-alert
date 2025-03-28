@@ -5,7 +5,7 @@ from psycopg2.extras import RealDictCursor
 
 router = APIRouter()
 
-# Database connection
+
 conn = psycopg2.connect(
     dbname="local",
     user="postgres",
@@ -16,7 +16,7 @@ conn = psycopg2.connect(
 )
 cursor = conn.cursor()
 
-# Pydantic Model
+
 class PatientRequest(BaseModel):
     p_name: str
     p_dept: str
@@ -24,11 +24,11 @@ class PatientRequest(BaseModel):
     p_age: int
     p_doc: str
 
-# POST route to add a patient
+
 @router.post("/patients/post")
 def add_patient(patient: PatientRequest):
     try:
-        # Insert into patients table
+        
         cursor.execute(
             "INSERT INTO patients (p_name, p_dept, p_desc, p_age, p_doc) VALUES (%s, %s, %s, %s, %s) RETURNING p_id",
             (patient.p_name, patient.p_dept, patient.p_desc, patient.p_age, patient.p_doc)
