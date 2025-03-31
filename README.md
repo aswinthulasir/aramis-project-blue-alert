@@ -84,6 +84,11 @@ SECRET_KEY=your_secret_key
 pip install pydantic[dotenv] psycopg[binary] sqlalchemy alembic
 ```
 
+### 6. Run the server
+```bash
+uvicorn app.main:app --reload
+```
+
 ## Database Schema, Query and Procedure Setup
 (For more security and authenticity, most of the querys and procedures are defined in the PostgreSQL CLI instead of the backend schema)
 
