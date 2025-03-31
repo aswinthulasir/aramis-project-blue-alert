@@ -58,6 +58,8 @@ Ensure that PostgreSQL is installed on your system. If not, download and install
 https://www.postgresql.org/download/
 
 2. Create the Database:
+
+```sql
 -- Open PostgreSQL CLI (psql) and run the following commands
 CREATE DATABASE medical_billing;
 
@@ -66,6 +68,7 @@ CREATE USER billing_admin WITH ENCRYPTED PASSWORD 'admin_password'; (username an
 
 -- Grant privileges
 GRANT ALL PRIVILEGES ON DATABASE medical_billing TO billing_admin;
+```
 
 ### Project Configuration
 5. Environment Variables:
